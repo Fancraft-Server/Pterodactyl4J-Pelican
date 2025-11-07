@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2025 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -151,33 +151,6 @@ public interface ApplicationServer extends Server, ISnowflake {
 	}
 
 	/**
-	 * The Nest the ApplicationServer is using
-	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
-	 */
-	PteroAction<Nest> retrieveNest();
-
-	/**
-	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest} for the ApplicationServer
-	 *
-	 * @return Long containing the nest id
-	 *
-	 * @see ApplicationServer#retrieveNest()
-	 */
-	long getNestIdLong();
-
-	/**
-	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest} for the ApplicationServer
-	 *
-	 * @return Never-null String containing the nest id
-	 *
-	 * @see ApplicationServer#retrieveNest()
-	 */
-	default String getNestId() {
-		return Long.toUnsignedString(getNestIdLong());
-	}
-
-	/**
 	 * The Egg the ApplicationServer is using
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
@@ -198,7 +171,7 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 *
 	 * @return Never-null String containing the egg id
 	 *
-	 * @see ApplicationServer#retrieveNest()
+	 * @see ApplicationServer#retrieveEgg()
 	 */
 	default String getEggId() {
 		return Long.toUnsignedString(getEggIdLong());

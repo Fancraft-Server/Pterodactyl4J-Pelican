@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2025 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -139,20 +139,8 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
-	public PteroAction<Nest> retrieveNest() {
-		if (!json.has("relationships")) return impl.retrieveNestById(getNestIdLong());
-
-		return new CompletedPteroAction<>(impl.getP4J(), new NestImpl(relationships.getJSONObject("nest"), impl));
-	}
-
-	@Override
-	public long getNestIdLong() {
-		return json.getLong("nest");
-	}
-
-	@Override
 	public PteroAction<ApplicationEgg> retrieveEgg() {
-		if (!json.has("relationships")) return impl.retrieveEggById(getNestId(), getEggId());
+		if (!json.has("relationships")) return impl.retrieveEggById(getEggId());
 
 		return new CompletedPteroAction<>(
 				impl.getP4J(), new ApplicationEggImpl(relationships.getJSONObject("egg"), impl));

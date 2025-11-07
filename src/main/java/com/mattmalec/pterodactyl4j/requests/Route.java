@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2025 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -68,11 +68,11 @@ public class Route {
 	public static class Servers {
 
 		public static final Route LIST_SERVERS = new Route(
-				GET, APPLICATION_PREFIX + "servers?include=allocations,user,subusers,nest,egg,location,node,databases");
+				GET, APPLICATION_PREFIX + "servers?include=allocations,user,subusers,egg,location,node,databases");
 		public static final Route GET_SERVER = new Route(
 				GET,
 				APPLICATION_PREFIX
-						+ "servers/{server_id}?include=allocations,user,subusers,nest,egg,location,node,databases");
+						+ "servers/{server_id}?include=allocations,user,subusers,egg,location,node,databases");
 		public static final Route UPDATE_SERVER_DETAILS =
 				new Route(PATCH, APPLICATION_PREFIX + "servers/{server_id}/details");
 		public static final Route UPDATE_SERVER_BUILD =
@@ -80,8 +80,7 @@ public class Route {
 		public static final Route UPDATE_SERVER_STARTUP =
 				new Route(PATCH, APPLICATION_PREFIX + "servers/{server_id}/startup");
 		public static final Route CREATE_SERVER = new Route(
-				POST,
-				APPLICATION_PREFIX + "servers?include=allocations,user,subusers,nest,egg,location,node,databases");
+				POST, APPLICATION_PREFIX + "servers?include=allocations,user,subusers,egg,location,node,databases");
 		public static final Route SUSPEND_SERVER = new Route(POST, APPLICATION_PREFIX + "servers/{server_id}/suspend");
 		public static final Route UNSUSPEND_SERVER =
 				new Route(POST, APPLICATION_PREFIX + "servers/{server_id}/unsuspend");
@@ -92,15 +91,11 @@ public class Route {
 				new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}/force");
 	}
 
-	public static class Nests {
+	public static class Eggs {
 
-		public static final Route LIST_NESTS = new Route(GET, APPLICATION_PREFIX + "nests?include=servers,eggs");
-		public static final Route GET_NEST =
-				new Route(GET, APPLICATION_PREFIX + "nests/{nest_id}?include=servers,eggs");
-		public static final Route GET_EGGS =
-				new Route(GET, APPLICATION_PREFIX + "nests/{nest_id}/eggs?include=variables,nest,servers");
+		public static final Route GET_EGGS = new Route(GET, APPLICATION_PREFIX + "eggs?include=variables,servers");
 		public static final Route GET_EGG =
-				new Route(GET, APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}?include=variables,nest,servers");
+				new Route(GET, APPLICATION_PREFIX + "eggs/{egg_id}?include=variables,servers");
 	}
 
 	public static class Client {

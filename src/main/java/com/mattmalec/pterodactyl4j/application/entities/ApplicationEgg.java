@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2024 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2025 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
-import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.ServerController;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
@@ -31,13 +30,6 @@ import java.util.Optional;
  * This should contain all information provided from the Pterodactyl instance about an ApplicationEgg.
  */
 public interface ApplicationEgg extends Egg, ISnowflake {
-
-	/**
-	 * The Nest the ApplicationEgg is associated with
-	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
-	 */
-	PteroAction<Nest> retrieveNest();
 
 	/**
 	 * The egg variables assigned to the ApplicationEgg

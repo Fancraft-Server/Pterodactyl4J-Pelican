@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2024 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2025 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,12 +17,9 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
-import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.DockerImage;
-import com.mattmalec.pterodactyl4j.application.entities.Nest;
 import com.mattmalec.pterodactyl4j.application.entities.Script;
-import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import java.time.OffsetDateTime;
 import java.util.*;
 import org.json.JSONObject;
@@ -37,13 +34,6 @@ public class ApplicationEggImpl implements ApplicationEgg {
 		this.json = json.getJSONObject("attributes");
 		this.relationships = json.getJSONObject("attributes").optJSONObject("relationships");
 		this.impl = impl;
-	}
-
-	@Override
-	public PteroAction<Nest> retrieveNest() {
-		if (!json.has("relationships")) return impl.retrieveNestById(json.getLong("nest"));
-
-		return new CompletedPteroAction<>(impl.getP4J(), new NestImpl(relationships.getJSONObject("nest"), impl));
 	}
 
 	@Override

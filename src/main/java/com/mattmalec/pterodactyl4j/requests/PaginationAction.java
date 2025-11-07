@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2025 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -45,39 +45,6 @@ import java.util.stream.StreamSupport;
  *     where the last iteration left off. It is recommended to set {@link #cache(boolean)} to true to allow the implementation to finish iterating over
  *     entities that have already been retrieved.</li>
  * </ul>
- *
- * <p><b>Examples</b>
- * <pre><code>
- *  /**
- *   * Retrieves servers until the specified limit is reached. The servers will be limited after being filtered by the owner.
- *   * If the owner doesn't have enough servers, this will iterate through all the servers. It is recommended to add an additional end condition.
- *   *&#47;
- *   public static {@literal List<ApplicationServer>} getServersByOwner(PteroApplication application, ApplicationUser user, int limit) {
- *     <u>PaginationAction<ApplicationServer></u> action = application.<u>retrieveServers</u>();
- *     Stream{@literal <ApplicationServer>} serverStream = action.stream()
- *             .limit(limit * 2) // this keeps things civilized
- *             .filter(server -> server.getOwnerIdLong() == user.getIdLong())
- *             .limit(limit); // limit on filtered stream
- *     return serverStream.collect(Collectors.toList());
- *   }
- * </code></pre>
- *
- * <pre><code>
- * /**
- *  * Iterates ClientServers in an async stream and stops once the limit has been reached.
- *  *&#47;
- *   public static void onEachServerAsync(PteroClient client, {@literal Consumer<ClientServer>} consumer, int limit) {
- *     if (limit < 1)
- *         return;
- *     <u>PaginationAction<ClientServer></u> action = client.<u>retrieveServers</u>();
- *     AtomicInteger counter = new AtomicInteger(limit);
- *     action.forEachAsync(server -> {
- *         consumer.accept(server);
- *         // if false the iteration is terminated; else it continues
- *         return counter.decrementAndGet() == 0;
- *     });
- *   }
- * </code></pre>
  *
  * @param  <T>
  *         The type of entity to paginate
@@ -372,22 +339,6 @@ public interface PaginationAction<T> extends PteroAction<List<T>>, Iterable<T> {
 	 * <p><b>This iteration will include already cached entities, in order to exclude cached
 	 * entities use {@link #forEachRemainingAsync(Procedure)}</b>
 	 *
-	 * <h4>Example</h4>
-	 * <pre>{@code
-	 * // stops servers until it finds another that is offline
-	 * public void stopServers(PaginationAction<ClientServer> action) {
-	 *     action.forEachAsync(server -> {
-	 *         UtilizationState state = server.retrieveUtilization()
-	 *             .map(Utilization::getState()).execute();
-	 *         if (state != UtilizationState.OFFLINE)
-	 *             server.stop().executeAsync();
-	 *         else
-	 *             return false;
-	 *         return true;
-	 *     });
-	 * }
-	 * }</pre>
-	 *
 	 * @param  action
 	 *         {@link com.mattmalec.pterodactyl4j.utils.Procedure Procedure} returning {@code true} if iteration should continue
 	 *
@@ -409,22 +360,6 @@ public interface PaginationAction<T> extends PteroAction<List<T>>, Iterable<T> {
 	 *
 	 * <p><b>This iteration will include already cached entities, in order to exclude cached
 	 * entities use {@link #forEachRemainingAsync(Procedure, Consumer)}</b>
-	 *
-	 * <h4>Example</h4>
-	 * <pre>{@code
-	 * // stops servers until it finds another that is offline
-	 * public void stopServers(PaginationAction<ClientServer> action) {
-	 *     action.forEachAsync(server -> {
-	 *         UtilizationState state = server.retrieveUtilization()
-	 *             .map(Utilization::getState()).execute();
-	 *         if (state != UtilizationState.OFFLINE)
-	 *             server.stop().executeAsync();
-	 *         else
-	 *             return false;
-	 *         return true;
-	 *     }, Throwable::printStackTrace);
-	 * }
-	 * }</pre>
 	 *
 	 * @param  action
 	 *         {@link com.mattmalec.pterodactyl4j.utils.Procedure Procedure} returning {@code true} if iteration should continue
@@ -448,22 +383,6 @@ public interface PaginationAction<T> extends PteroAction<List<T>>, Iterable<T> {
 	 * <p><b>This iteration will exclude already cached entities, in order to include cached
 	 * entities use {@link #forEachAsync(Procedure)}</b>
 	 *
-	 * <h4>Example</h4>
-	 * <pre>{@code
-	 * // stops servers until it finds another that is offline
-	 * public void stopServers(PaginationAction<ClientServer> action) {
-	 *     action.forEachRemainingAsync(server -> {
-	 *         UtilizationState state = server.retrieveUtilization()
-	 *             .map(Utilization::getState()).execute();
-	 *         if (state != UtilizationState.OFFLINE)
-	 *             server.stop().executeAsync();
-	 *         else
-	 *             return false;
-	 *         return true;
-	 *     });
-	 * }
-	 * }</pre>
-	 *
 	 * @param  action
 	 *         {@link com.mattmalec.pterodactyl4j.utils.Procedure Procedure} returning {@code true} if iteration should continue
 	 *
@@ -485,22 +404,6 @@ public interface PaginationAction<T> extends PteroAction<List<T>>, Iterable<T> {
 	 *
 	 * <p><b>This iteration will exclude already cached entities, in order to include cached
 	 * entities use {@link #forEachAsync(Procedure, Consumer)}</b>
-	 *
-	 * <h4>Example</h4>
-	 * <pre>{@code
-	 * // stops servers until it finds another that is offline
-	 * public void stopServers(PaginationAction<ClientServer> action) {
-	 *     action.forEachAsync(server -> {
-	 *         UtilizationState state = server.retrieveUtilization()
-	 *             .map(Utilization::getState()).execute();
-	 *         if (state != UtilizationState.OFFLINE)
-	 *             server.stop().executeAsync();
-	 *         else
-	 *             return false;
-	 *         return true;
-	 *     }, Throwable::printStackTrace);
-	 * }
-	 * }</pre>
 	 *
 	 * @param  action
 	 *         {@link com.mattmalec.pterodactyl4j.utils.Procedure Procedure} returning {@code true} if iteration should continue
