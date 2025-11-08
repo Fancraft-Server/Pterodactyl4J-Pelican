@@ -93,7 +93,7 @@ public class Route {
 
 	public static class Eggs {
 
-		public static final Route GET_EGGS = new Route(GET, APPLICATION_PREFIX + "eggs?include=variables,servers");
+		public static final Route LIST_EGGS = new Route(GET, APPLICATION_PREFIX + "eggs?include=variables,servers");
 		public static final Route GET_EGG =
 				new Route(GET, APPLICATION_PREFIX + "eggs/{egg_id}?include=variables,servers");
 	}

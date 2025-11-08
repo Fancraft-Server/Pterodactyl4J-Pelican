@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+import org.json.JSONObject;
 
 public class PteroApplicationImpl implements PteroApplication {
 
@@ -170,8 +171,16 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationEgg>> retrieveEggs() {
-		return PaginationResponseImpl.onPagination(
-				api, Route.Eggs.GET_EGGS.compile(), (object) -> new ApplicationEggImpl(object, this));
+    return PteroActionImpl.onRequestExecute(
+        api, Route.Eggs.LIST_EGGS.compile(), (response, request) -> {
+          List<ApplicationEgg> eggs = new ArrayList<>();
+          JSONObject json = response.getObject();
+          for (Object o : json.getJSONArray("data")) {
+            JSONObject egg = new JSONObject(o.toString());
+            eggs.add(new ApplicationEggImpl(egg, this));
+          }
+          return Collections.unmodifiableList(eggs);
+        });
 	}
 
 	@Override
